@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+
+</script>
 
 <template>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -75,4 +77,6 @@
                 </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

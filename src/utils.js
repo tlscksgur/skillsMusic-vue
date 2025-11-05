@@ -1,23 +1,22 @@
 import { watch } from "vue";
 
-// ref 반응현 변수를 로컬스토리지와 동기화시키는 함수
+// ref 반응형 변수를 로컬스토리지와 동기화 시키는 함수
 export const syncStorage = (value, name) => {
-    const storageName = '20251105_cksgur_' + name
+    const storageName = '251105_hyeonbeen_' + name;
 
-    if(localStorage(storageName)) {
-        value.value = JSON.parse(localStorage[storageName])
+    if(localStorage[storageName]) {
+        value.value = JSON.parse(localStorage[storageName]);
     }
 
-    watch(value, ()=> {
+    watch(value, () => {
         localStorage[storageName] = JSON.stringify(value.value);
-    },{deep: true});
-
+    }, {deep: true});
 }
 
 export const priceToNumber = (price) => Number(price.replace('원', ''));
-
 export const priceParsing = (price) => {
     if(typeof price === 'number') return price.toLocaleString();
+
     return priceToNumber(price).toLocaleString();
 }
 

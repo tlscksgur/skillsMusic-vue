@@ -1,25 +1,24 @@
 <script setup>
-    import { categories, searchedWord, searchInput, selectCategory } from '@/store';
-    
-    function selectCate(category) {
-        selectCategory.value = category;
-    }
+import { categories, searchedWord, searchInput, selectedCategory } from '@/store';
 
-    function activeMenuClass(category) {
-        return{
-            'active-menu': category === selectCategory.value
-        }
-    }
+function selectCategory(category) {
+    selectedCategory.value = category;
+    console.log(selectedCategory.value);
+}
 
-    function search() {
-        searchedWord.value = searchInput.value;
+function activeMenuClass(category) {
+    return {
+        'active-menu': category === selectedCategory.value
     }
+}
 
+function search() {
+    searchedWord.value = searchInput.value;
+}
 </script>
 
 <template>
-    <!-- /. NAV TOP  -->
-        <nav class="navbar-default navbar-side" role="navigation">
+    <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
 				    <li class="text-center">
@@ -35,15 +34,19 @@
 					</li>
 				
                     <li>
-                        <a :class="activeMenuClass('All')" class="active-menu" href="#" @click="selectCate('All')"><i class="fa fa-th-list fa-2x"></i> <span>ALL</span></a>
+                        <a :class="activeMenuClass('ALL')" @click="selectCategory('ALL')"  href="#"><i class="fa fa-th-list fa-2x"></i> <span>ALL</span></a>
                     </li>
-                    
+
                     <li v-for="category in categories" :key="category">
-                        <a href="#" :class="activeMenuClass(category)" @click="selectCate(category)"><i class="fa fa-youtube-play fa-2x"></i> <span>{{category}}</span></a>
-                    </li>
+                        <a href="#" :class="activeMenuClass(category)" @click="selectCategory(category)"><i class="fa fa-youtube-play fa-2x"></i> <span>{{category}}</span></a>
+                    </li>              			
                 </ul>
             </div>
-        </nav>
+        </nav>  
+
+        <!-- /. NAV SIDE  -->
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
