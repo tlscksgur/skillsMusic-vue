@@ -6,10 +6,11 @@ export const musicData = ref(musicDataJson.data);
 console.log(musicData.value);
 musicData.value.forEach(data => {
     if(!data.id) data.id = getId();
+    if(!data.count) data.count = 0;
+    data.src = new URL(`/src/assets/images/${data.albumJaketImage}`, import.meta.url).href;
 });
 
 syncStorage(musicData, 'musicData');
-
 
 // 중복제거 카테고리
 export const categories = computed(() => {

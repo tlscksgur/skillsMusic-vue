@@ -1,5 +1,29 @@
 <script setup>
+import { musicData } from '@/store';
+import { priceParsing, priceToNumber } from '@/utils';
+import { computed } from 'vue';
 
+const props = defineProps(['cartTotalPrice']);
+
+const cartList = computed(() => musicData.value.filter(data => data.count > 0));
+
+function deleteCart(item) {
+    const confirm = window.confirm('정말 삭제하시겠습니까?');
+    if(!confirm) return;
+
+    item.count = 0;
+}
+
+function payment() {
+    alert('결제가 완료되었습니다.');
+
+    cartList.value.forEach(item => item.count = 0);
+    $('#myModal').modal('hide');
+}
+
+function deleteLimit(count, e) {
+    if(String(count).length <= 1) e.preventDefault();
+}
 </script>
 
 <template>
@@ -32,32 +56,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr v-for="item in cartList" :key="item.id">
                                             <td class="albuminfo">
-                                                <img src="">
+                                                <img :src="item.src">
                                                 <div class="info">
-                                                    <h4>Lovelyz 4th Mini AlbumLovelyz 4th Mini Album</h4>
+                                                    <h4>{{ item.albumName }}</h4>
                                                     <span>
                                                         <i class="fa fa-microphone"> 아티스트</i> 
-                                                        <p>러블리즈(Lovelyz)</p>
+                                                        <p>{{ item.artist }}</p>
                                                     </span>
                                                     <span>
                                                         <i class="fa  fa-calendar"> 발매일</i> 
-                                                        <p>2018.04.23</p>
+                                                        <p>{{ item.release }}</p>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td class="albumprice">
-                                                ￦ 20,000
+                                                ￦ {{ priceParsing(item.price) }}
                                             </td>
                                             <td class="albumqty">
-                                                <input type="number" class="form-control" value="1">
+                                                <input @keydown.delete="deleteLimit(item.count, $event)" min="1" type="number" class="form-control" v-model="item.count">
                                             </td>
                                             <td class="pricesum">
-                                                ￦ 20,000
+                                                ￦ {{ priceParsing(priceToNumber(item.price) * item.count) }}
                                             </td>
                                             <td>
-                                                <button class="btn btn-default">
+                                                <button @click="deleteCart(item)" class="btn btn-default">
                                                     <i class="fa fa-trash-o"></i> 삭제
                                                 </button>
                                             </td>
@@ -65,12 +89,12 @@
                                     </tbody>
                                 </table>
                                 <div class="totalprice text-right">
-                                    <h3>총 합계금액 : <span>￦20,000</span> 원</h3>
+                                    <h3>총 합계금액 : <span>￦{{ priceParsing(cartTotalPrice) }}</span> 원</h3>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                                <button type="button" class="btn btn-primary">결제하기</button>
+                                <button type="button" class="btn btn-primary" @click="payment">결제하기</button>
                             </div>
                         </div>
                     </div>
